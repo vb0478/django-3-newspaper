@@ -12,15 +12,17 @@ class CustomUserCreationForm(UserCreationForm):
         # the default setting for fields on UserCreationForm is just
         '''username, email, and password '''
         # even though there are many more fields available
-        fields = UserCreationForm.Meta.fields + ('age',)
+        #fields = UserCreationForm.Meta.fields + ('age',)
         # To add custom age field we simply tack it on at the end
         # and it will display automatically on our future sign up page
+        fields = ('username', 'email', 'age',) # new
 
 class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = CustomUser
-        fields = UserChangeForm.Meta.fields
+        #fields = UserChangeForm.Meta.fields
+        fields = ('username', 'email', 'age',) # new
 
 # only other step we need is to update our admin.py file since Admin is
 # tightly coupled to the default User model.
