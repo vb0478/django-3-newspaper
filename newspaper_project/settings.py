@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # locals
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
+    # 3rd party
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +131,22 @@ AUTH_USER_MODEL = 'users.CustomUser' # new
 # newspaper_project/settings.py
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+# Working with forms is a challenge and django-crispy-forms makes it easier to write DRY code.
+# pipenv install django-crispy-forms==..
+# Since we’re using Bootstrap4 we should also add that config to our settings.py file.
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# Now in our signup.html template we can quickly use crispy forms.
+
+# In production we’ll use the email service SendGrid to actually send the emails
+# but for testing purposes we can rely on Django’s console backend setting
+# which outputs the email text to our command line console instead.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# after regisgration on SendGrid or MailGun:
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # new
+#EMAIL_HOST = 'smtp.sendgrid.net'
+#EMAIL_HOST_USER = 'apikey'
+#EMAIL_HOST_PASSWORD = 'sendgrid_password'
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
