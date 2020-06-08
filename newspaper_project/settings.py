@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # locals
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
+    'articles.apps.ArticlesConfig'
     # 3rd party
     'crispy_forms',
 ]
@@ -144,9 +145,22 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # after regisgration on SendGrid or MailGun:
+# Web API or SMTP Relay.
+# We’ll use SMTP since it is the simplest and works well for our basic needs here.
+# In a large-scale website you likely would want to use the Web API instead
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # new
 #EMAIL_HOST = 'smtp.sendgrid.net'
 #EMAIL_HOST_USER = 'apikey'
 #EMAIL_HOST_PASSWORD = 'sendgrid_password'
 #EMAIL_PORT = 587
 #EMAIL_USE_TLS = True
+
+# custom email:
+# In this case, I knew what text Django was using by default
+# but it wasn’t clear where in the Django source code it was written.
+# all of Django’s source code is available on Github
+# Use the Github search bar and enter a few words from the email text.
+# The first result is the one we want. It shows the code is located at
+# django/contrib/\ admin/templates/registration/password_reset_email.html
+# Let’s change it.
+# $ touch templates/registration/password_reset_email.html
