@@ -2,11 +2,24 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
-from .models import Article
+from .models import Article, Category
 
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin # new
 
-# Create your views here.
+# The base View class used in Django has an internal dispatch() method
+# We will check if the author of the article is indeed the same user
+# who is currently logged-in and trying to make a change.
+# At the top of our articles/views.py file add a line importing PermissionDenied.
+# Then add a dispatch method for both ArticleUpdateView and ArticleDeleteView.
+class CategoryListView(ListView):
+    model =  Category
+    template_name = 'category_list.html'
+
+class CategoryDetailView(DetailView): # new
+    model = Category
+    template_name = 'category_detail.html'
+
 class ArticleListView(ListView):
     model =  Article
     template_name = 'article_list.html'
@@ -21,11 +34,23 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView): # new
     template_name = 'article_edit.html'
     login_url = 'login'
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
 class ArticleDeleteView(LoginRequiredMixin, DeleteView): # new
     model = Article
     template_name = 'article_delete.html'
     success_url = reverse_lazy('article_list')
     login_url = 'login'
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
 class ArticleNewView(LoginRequiredMixin, CreateView):
     model = Article

@@ -3,7 +3,8 @@ from django.urls import path
 from .views import ( ArticleListView,
                      ArticleUpdateView,
                      ArticleDetailView,
-                     ArticleDeleteView, ArticleNewView # new
+                     ArticleDeleteView, ArticleNewView,
+    CategoryListView, CategoryDetailView # new
 )
 
 urlpatterns = [
@@ -12,5 +13,7 @@ urlpatterns = [
     path('<int:pk>/', ArticleDetailView.as_view(), name='article_detail'), # new
 
     path('new/', ArticleNewView.as_view(), name='article_new'),
+    path('cat/', CategoryListView.as_view(), name='category_list'),
+    path('cat/<int:pk>/', CategoryDetailView.as_view(), name='category_detail'),
     path('', ArticleListView.as_view(), name='article_list'),
 ]
