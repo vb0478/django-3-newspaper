@@ -60,7 +60,8 @@ ROOT_URLCONF = 'newspaper_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')], # new dir
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                 os.path.join(BASE_DIR, 'articles/templates/articles')], # new dir
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

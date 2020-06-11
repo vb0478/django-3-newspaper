@@ -25,3 +25,5 @@ class Article(models.Model):
     class Meta:
         pass
 
+# Authorization restricts access;
+# authentication enables a user sign up and log in flow.
