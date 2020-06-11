@@ -4,6 +4,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from .models import Article
 
+from django.contrib.auth.mixins import LoginRequiredMixin # new
+
 # Create your views here.
 class ArticleListView(ListView):
     model =  Article
@@ -13,17 +15,19 @@ class ArticleDetailView(DetailView): # new
     model = Article
     template_name = 'article_detail.html'
 
-class ArticleUpdateView(UpdateView): # new
+class ArticleUpdateView(LoginRequiredMixin, UpdateView): # new
     model = Article
     fields = ('title', 'body',)
     template_name = 'article_edit.html'
+    login_url = 'login'
 
-class ArticleDeleteView(DeleteView): # new
+class ArticleDeleteView(LoginRequiredMixin, DeleteView): # new
     model = Article
     template_name = 'article_delete.html'
     success_url = reverse_lazy('article_list')
+    login_url = 'login'
 
-class ArticleNewView(CreateView):
+class ArticleNewView(LoginRequiredMixin, CreateView):
     model = Article
     template_name = 'article_new.html'
 
@@ -39,3 +43,13 @@ class ArticleNewView(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+# To restrict view access to only logged in users,
+# Django has a LoginRequired mixin
+# The documentation for the LoginRequired mixin tells us the answer.
+# We can add a login_url to override the default parameter.
+# We’re using the named URL of our login route here, login.
+    login_url = 'login'
+# Nowwe see that restricting view access is just a matter of adding
+# LoginRequiredMixin at the beginning of all existing views and
+# specifying the correct login_url.
