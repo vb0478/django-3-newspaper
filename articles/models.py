@@ -45,8 +45,10 @@ class Article(models.Model):
 
 class Comment(models.Model):
     comment = models.CharField(max_length=250)
-    author = models.ForeignKey(get_user_model(), on_delete = models.PROTECT)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), on_delete = models.PROTECT,)
+    article = models.ForeignKey(Article,
+                                on_delete=models.CASCADE,
+                                related_name='comments',)
 
     def __str__(self):
         return self.comment[:60]

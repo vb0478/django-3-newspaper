@@ -21,6 +21,12 @@ class CategoryDetailView(DetailView): # new
     template_name = 'category_detail.html'
 
 class ArticleListView(ListView):
+    # we want to follow a relationship backward:
+    # for each Article look up related Comment models.
+    # for our Article model we can use article_set to access all instances of the model.
+    # A better approach is to add a related_name attribute to our model
+    # which lets us explicitly set the name of this reverse relationship instead.
+    # To start add a related_name attribute to our Comment model.
     model =  Article
     template_name = 'article_list.html'
 
